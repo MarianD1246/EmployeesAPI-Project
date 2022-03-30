@@ -9,7 +9,6 @@ namespace EmployeesAPI
         {
             InverseReportsToNavigation = new HashSet<Employee>();
             Orders = new HashSet<Order>();
-            Territories = new HashSet<Territory>();
         }
 
         public int EmployeeId { get; set; }
@@ -34,7 +33,5 @@ namespace EmployeesAPI
         public virtual Employee? ReportsToNavigation { get; set; }
         public virtual ICollection<Employee> InverseReportsToNavigation { get; set; }
         public virtual ICollection<Order> Orders { get; set; }
-
-        public virtual ICollection<Territory> Territories { get; set; }
     }
 }
