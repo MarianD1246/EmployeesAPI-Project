@@ -12,7 +12,8 @@ namespace EmployeesAPI.Services
                 FirstName = employee.FirstName,
                 LastName = employee.LastName,
                 Title = employee.Title,
-                Region = employee.Region
+                Region = employee.Region,
+                City = employee.City,
 
             };
         }

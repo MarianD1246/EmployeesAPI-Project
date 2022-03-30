@@ -27,12 +27,12 @@ namespace EmployeesAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetEmployees()
         {
-            var empolyee = await _context.Employees.Select(x => Utilities.EmployeeToDTO(x)).ToListAsync();
-            return empolyee;
+            var employee = await _context.Employees.Select(x => Utilities.EmployeeToDTO(x)).ToListAsync();
+            return employee;
         }
 
-        // GET: api/Employees/5
-        [HttpGet("{id}")]
+        // GET: api/Employees/id/5
+        [HttpGet("id/{id}")]
         public async Task<ActionResult<Employee>> GetEmployee(int id)
         {
             var employee = await _context.Employees.FindAsync(id);
@@ -44,6 +44,43 @@ namespace EmployeesAPI.Controllers
 
             return employee;
         }
+
+        //GET Employees by Surname
+        [HttpGet("name_search/{lastName}")]
+        public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetEmployeesByName(string lastName)
+        {
+            var employee = await _context.Employees.Where(e => e.LastName == lastName).Select(e => Utilities.EmployeeToDTO(e)).ToListAsync();
+
+            if (employee == null)
+            {
+                return NotFound();
+            }
+
+            return employee;
+        }
+
+        //GET Employee by Full name
+        [HttpGet("name_search/{lastName}/{firstName}")]
+        public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetEmployeesByName(string lastName, string firstName)
+        {
+            var employee = await _context.Employees.Where(e => e.LastName == lastName && e.FirstName == firstName).Select(e => Utilities.EmployeeToDTO(e)).ToListAsync(); 
+
+            if (employee == null)
+            {
+                return NotFound();
+            }
+
+            return employee;
+        }
+
+        //GET: api/employees/city/London 
+        [HttpGet("city/{city}")]
+        public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetEmployeesByCity(string city)
+        {
+            var employee = await _context.Employees.Where(e => e.City == city).Select(e => Utilities.EmployeeToDTO(e)).ToListAsync();
+            return employee; 
+        }
+
 
         // PUT: api/Employees/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

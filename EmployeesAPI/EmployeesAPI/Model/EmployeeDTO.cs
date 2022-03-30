@@ -9,6 +9,7 @@ namespace EmployeesAPI.Model
         public string FirstName { get; set; } = null!;
         public string? Title { get; set; }
         public string? Region { get; set; }
+        public string? City { get; set; }
 
         //Age from DateTime to int
 
