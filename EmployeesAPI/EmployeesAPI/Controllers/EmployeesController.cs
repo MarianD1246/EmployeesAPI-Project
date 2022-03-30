@@ -49,7 +49,7 @@ namespace EmployeesAPI.Controllers
         [HttpGet("name_search/{lastName}")]
         public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetEmployeesByName(string lastName)
         {
-            var employee = await _context.Employees.Where(e => e.LastName == lastName).Select(e => Utilities.EmployeeToDTO(e)).ToListAsync();
+            var employee = await _context.Employees.Where(e => e.LastName == lastName).OrderBy(e => e.FirstName).Select(e => Utilities.EmployeeToDTO(e)).ToListAsync();
 
             if (employee == null)
             {
