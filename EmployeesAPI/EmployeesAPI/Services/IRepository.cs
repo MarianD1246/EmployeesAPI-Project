@@ -1,4 +1,6 @@
-﻿namespace EmployeesAPI.Services
+﻿using EmployeesAPI.Model;
+
+namespace EmployeesAPI.Services
 {
     //This is a generic interface
     public interface IRepository<T>
@@ -9,5 +11,6 @@
         public Task SaveItemChangesAsync();
         public Task RemoveItemAsync(T item);
         public bool ItemExists(long id);
+        object Select(Func<object, EmployeeDTO> p);
     }
 }

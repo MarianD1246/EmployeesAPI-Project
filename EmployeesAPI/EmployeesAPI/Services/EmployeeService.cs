@@ -1,4 +1,6 @@
 ﻿
+using EmployeesAPI.Model;
+
 namespace EmployeesAPI.Services;
 
 public class EmployeeService : IRepository<Employee>
@@ -43,6 +45,11 @@ public class EmployeeService : IRepository<Employee>
     public async Task SaveItemChangesAsync()
     {
         await _context.SaveChangesAsync();
+    }
+
+    public object Select(Func<object, EmployeeDTO> p)
+    {
+        throw new NotImplementedException();
     }
 }
 
