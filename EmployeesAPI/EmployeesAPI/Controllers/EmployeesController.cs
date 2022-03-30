@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using EmployeesAPI;
+using EmployeesAPI.Model;
+using EmployeesAPI.Services;
 
 namespace EmployeesAPI.Controllers
 {
@@ -23,9 +25,10 @@ namespace EmployeesAPI.Controllers
 
         // GET: api/Employees
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Employee>>> GetEmployees()
+        public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetEmployees()
         {
-            return await _context.Employees.ToListAsync();
+            var empolyee = await _context.Employees.Select(x => Utilities.EmployeeToDTO(x)).ToListAsync();
+            return empolyee;
         }
 
         // GET: api/Employees/5
