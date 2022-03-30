@@ -61,9 +61,23 @@ namespace EmployeesAPI.Controllers
 
         //GET Employee by Full name
         [HttpGet("name_search/{lastName}/{firstName}")]
-        public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetEmployeesByName(string lastName, string firstName)
+        public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetEmployeesByFullName(string lastName, string firstName)
         {
             var employee = await _context.Employees.Where(e => e.LastName == lastName && e.FirstName == firstName).Select(e => Utilities.EmployeeToDTO(e)).ToListAsync(); 
+
+            if (employee == null)
+            {
+                return NotFound();
+            }
+
+            return employee;
+        }
+
+        //GET Employee by Job Title
+        [HttpGet("jobtitle_search/{jobTitle}")]
+        public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetEmployeesByJobTitle(string jobTitle)
+        {
+            var employee = await _context.Employees.Where(e => e.Title == jobTitle.Replace('-',' ')).Select(e => Utilities.EmployeeToDTO(e)).ToListAsync();
 
             if (employee == null)
             {
