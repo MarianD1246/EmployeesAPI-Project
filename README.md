@@ -11,4 +11,4 @@ We also had the following requiremed the use of DTOs to return the desired infor
 * Use of Hypermedia as the Engine of Application State (HATEOAS)
 * Unit testing of the controller methods (you will need to mock the Repository interface)
 
-** The Deadline is Friday 1st April 4pm. At 4pm there will be a technical review, where you will explain what your API does, who the users of your API will be, what information can you request from the API (why will this be relevant to the user), demonstrate some requests (using postman or swagger), a retrospective. **
+**The Deadline is Friday 1st April 4pm. At 4pm there will be a technical review, where you will explain what your API does, who the users of your API will be, what information can you request from the API (why will this be relevant to the user), demonstrate some requests (using postman or swagger), a retrospective.**
