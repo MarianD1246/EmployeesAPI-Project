@@ -33,19 +33,42 @@ namespace EmployeesAPI.Controllers
 
         // GET: api/Employees contains all employee searches
         [HttpGet]
-        public async Task<ActionResult<Employee>> GetEmployee()
+        public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetEmployee()
         {
-            Employee employee = new();
+            List<EmployeeDTO> employeeList = new();
             if (Int32.TryParse(HttpContext.Request.Query["id"], out int id))
             {
-              employee = await _context.Employees.FindAsync(id);
+                employeeList.Add(Utilities.EmployeeToDTO(await _context.Employees.FindAsync(id)));
+                if (employeeList == null)
+                {
+                    return NotFound();
+                }
+            }
+            else if (!String.IsNullOrEmpty(HttpContext.Request.Query["surname"]) && String.IsNullOrEmpty(HttpContext.Request.Query["firstname"])) //Check if surname is valid
+            {
+                var lastName = HttpContext.Request.Query["surname"].ToString();
+                employeeList = await _context.Employees.Where(e => e.LastName == lastName).OrderBy(e => e.FirstName).Select(e => Utilities.EmployeeToDTO(e)).ToListAsync();
+                if (employeeList == null) return NotFound();
+            }
+            else if (!String.IsNullOrEmpty(HttpContext.Request.Query["surname"]) && !String.IsNullOrEmpty(HttpContext.Request.Query["firstname"]))
+            {
+                var lastName = HttpContext.Request.Query["surname"].ToString();
+                var firstName = HttpContext.Request.Query["firstname"].ToString();
+
+                employeeList = await _context.Employees.Where(e => e.LastName == lastName && e.FirstName == firstName).OrderBy(e => e.FirstName).Select(e => Utilities.EmployeeToDTO(e)).ToListAsync();
+
+                if (employeeList == null || employeeList.Count == 0)
+                {
+                    
+                    return NotFound();
+                }
             }
             else
             {
                 return NotFound();
             }
 
-            return employee;
+            return employeeList;
         }
 
         //GET Employees by Surname
