@@ -24,20 +24,23 @@ namespace EmployeesAPI.Controllers
         }
 
         // GET: api/Employees
-        [HttpGet]
+        [HttpGet("all")]
         public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetEmployees()
         {
             var employee = await _context.Employees.Select(x => Utilities.EmployeeToDTO(x)).ToListAsync();
             return employee;
         }
 
-        // GET: api/Employees/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Employee>> GetEmployeeById(int id)
+        // GET: api/Employees contains all employee searches
+        [HttpGet]
+        public async Task<ActionResult<Employee>> GetEmployee()
         {
-            var employee = await _context.Employees.FindAsync(id);
-
-            if (employee == null)
+            Employee employee = new();
+            if (Int32.TryParse(HttpContext.Request.Query["id"], out int id))
+            {
+              employee = await _context.Employees.FindAsync(id);
+            }
+            else
             {
                 return NotFound();
             }
@@ -46,9 +49,10 @@ namespace EmployeesAPI.Controllers
         }
 
         //GET Employees by Surname
-        [HttpGet("name_search/{lastName}")]
-        public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetEmployeesByName(string lastName)
+        [HttpGet("name_search/")]
+        public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetEmployeesByName()
         {
+            var lastName = HttpContext.Request.Query["surname"].ToString();
             var employee = await _context.Employees.Where(e => e.LastName == lastName).OrderBy(e => e.FirstName).Select(e => Utilities.EmployeeToDTO(e)).ToListAsync();
 
             if (employee == null)
@@ -60,9 +64,11 @@ namespace EmployeesAPI.Controllers
         }
 
         //GET Employee by Full name
-        [HttpGet("name_search/{lastName}/{firstName}")]
-        public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetEmployeesByFullName(string lastName, string firstName)
+        [HttpGet("name_search/")]
+        public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetEmployeesByFullName()
         {
+            var lastName = HttpContext.Request.Query["surname"].ToString();
+            var firstName = HttpContext.Request.Query["firstname"].ToString();
             var employee = await _context.Employees.Where(e => e.LastName == lastName && e.FirstName == firstName).Select(e => Utilities.EmployeeToDTO(e)).ToListAsync(); 
 
             if (employee == null)
@@ -74,9 +80,10 @@ namespace EmployeesAPI.Controllers
         }
 
         //GET Employee by Job Title
-        [HttpGet("jobtitle_search/{jobTitle}")]
-        public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetEmployeesByJobTitle(string jobTitle)
+        [HttpGet("jobtitle_search/")]
+        public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetEmployeesByJobTitle()
         {
+            var jobTitle = HttpContext.Request.Query["jobtitle"].ToString();
             var employee = await _context.Employees.Where(e => e.Title == jobTitle.Replace('-',' ')).Select(e => Utilities.EmployeeToDTO(e)).ToListAsync();
 
             if (employee == null)
@@ -160,3 +167,47 @@ namespace EmployeesAPI.Controllers
         }
     }
 }
+
+
+// GET: api/Employees/id/5
+//[HttpGet("id/{id:int:min(1)}")]
+//public async Task<ActionResult<Employee>> GetEmployee(int id)
+//{
+//    var employee = await _context.Employees.FindAsync(id);
+
+//    if (employee == null)
+//    {
+//        return NotFound();
+//    }
+
+//    return employee;
+//}
+
+//// GET: api/Employees/id/5 
+//[HttpGet("id/")]
+//public async Task<ActionResult<Employee>> GetEmployee()
+//{
+//    var employee = await _context.Employees.FindAsync(Int32.Parse(HttpContext.Request.Query["id"]));
+
+//    if (employee == null)
+//    {
+//        return NotFound();
+//    }
+
+//    return employee;
+//}
+
+////GET Employees by Surname
+//[HttpGet("name_search/")]
+//public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetEmployeesByName()
+//{
+//    var lastName = HttpContext.Request.Query["surname"].ToString();
+//    var employee = await _context.Employees.Where(e => e.LastName == lastName).OrderBy(e => e.FirstName).Select(e => Utilities.EmployeeToDTO(e)).ToListAsync();
+
+//    if (employee == null)
+//    {
+//        return NotFound();
+//    }
+
+//    return employee;
+//}
