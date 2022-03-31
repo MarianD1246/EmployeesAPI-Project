@@ -12,7 +12,7 @@ using EmployeesAPI.Services;
 
 namespace EmployeesAPI.Controllers
 {
-    [Route("api/Employees")]
+    [Route("api/employees")]
     [ApiController]
     public class EmployeesController : ControllerBase
     {
@@ -32,9 +32,24 @@ namespace EmployeesAPI.Controllers
         }
 
         // GET: api/Employees/id/5
-        [HttpGet("id/{id}")]
-        public async Task<ActionResult<Employee>> GetEmployee(int id)
+        //[HttpGet("id/{id:int:min(1)}")]
+        //public async Task<ActionResult<Employee>> GetEmployee(int id)
+        //{
+        //    var employee = await _context.Employees.FindAsync(id);
+
+        //    if (employee == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return employee;
+        //}
+
+        // GET: api/Employees/id/5 NEW METHOD TEST
+        [HttpGet("id/")]
+        public async Task<ActionResult<Employee>> GetEmployee()
         {
+            int id = Int32.Parse(HttpContext.Request.Query["id"]);
             var employee = await _context.Employees.FindAsync(id);
 
             if (employee == null)
@@ -94,7 +109,6 @@ namespace EmployeesAPI.Controllers
             var employee = await _context.Employees.Where(e => e.City == city).Select(e => Utilities.EmployeeToDTO(e)).ToListAsync();
             return employee; 
         }
-
 
         // PUT: api/Employees/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
