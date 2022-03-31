@@ -42,7 +42,7 @@ namespace EmployeesAPI.Controllers
             }
             else if (!String.IsNullOrEmpty(surnameQuery))
             {
-                return await GetByName(surnameQuery.ToString(), firstNameQuery);
+                employeeList = await GetByName(surnameQuery.ToString(), firstNameQuery);
             }
             else if (!String.IsNullOrEmpty(cityQuery))
             {
@@ -134,13 +134,12 @@ namespace EmployeesAPI.Controllers
             Employee employee = (await _context.Employees.FindAsync(id));
             if (employee != null)
             {
-                employeeList.Add(Utilities.EmployeeToDTO(employee));
-                return employeeList;
+                employeeList.Add(Utilities.EmployeeToDTO(employee)); 
             }
-            else return NotFound();
+            return employeeList;
         }
 
-        public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetByName(string lastName, Microsoft.Extensions.Primitives.StringValues firstNameQuery)
+        public async Task<List<EmployeeDTO>> GetByName(string lastName, Microsoft.Extensions.Primitives.StringValues firstNameQuery)
         {
             List<EmployeeDTO> employeeList = new();
             if (!String.IsNullOrEmpty(firstNameQuery))
