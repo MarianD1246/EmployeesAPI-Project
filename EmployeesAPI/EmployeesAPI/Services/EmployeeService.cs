@@ -7,6 +7,11 @@ public class EmployeeService : IRepository<Employee>
 {
     private readonly NorthwindContext _context;
 
+    public EmployeeService()
+    {
+        _context = new NorthwindContext();
+    }
+
     public EmployeeService(NorthwindContext context)
     {
         _context = context;
@@ -19,19 +24,19 @@ public class EmployeeService : IRepository<Employee>
     }
 
     //Why can't this method be async
-    public List<Employee> GetAllItemsAsync()
+    public List<Employee> GetAllItems()
     {
         return _context.Employees.ToList();
     }
 
 
-    public async Task<Employee> GetItemByIdAsync(long id)
+    public async Task<Employee> GetItemByIdAsync(int id)
     {
         return await _context.Employees.FindAsync(id);
     }
 
     //Make async?
-    public bool ItemExists(long id)
+    public bool ItemExists(int id)
     {
         return _context.Employees.Any(e => e.EmployeeId == id);
     }

@@ -26,7 +26,7 @@ namespace EmployeeAPITesting
             _service = new EmployeeService(_context);
             _sut = new EmployeesController(_context);
             TestEmpolyeesDataSource employeesCollection = new();
-            foreach (Employee emp in employeesCollection.employee)
+            foreach (Employee emp in employeesCollection.employeesList)
             {
                 _service.CreateItemAsync(emp);
             }
