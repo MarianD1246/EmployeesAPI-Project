@@ -30,8 +30,9 @@ public class EmployeeService : IRepository<Employee>
     }
 
 
-    public async Task<Employee> GetItemByIdAsync(int id)
+    public async Task<Employee>? GetItemByIdAsync(int id)
     {
+
         return await _context.Employees.FindAsync(id);
     }
 
@@ -47,7 +48,7 @@ public class EmployeeService : IRepository<Employee>
         await SaveItemChangesAsync();
     }
 
-    private async Task SaveItemChangesAsync()
+    public async Task SaveItemChangesAsync()
     {
         await _context.SaveChangesAsync();
     }

@@ -10,6 +10,7 @@ namespace EmployeesAPI.Services
         public Task CreateItemAsync(T item);
         public Task RemoveItemAsync(T item);
         public bool ItemExists(int id);
+        public Task SaveItemChangesAsync();
         object Select(Func<object, Employee> p);
     }
 }

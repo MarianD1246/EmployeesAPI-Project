@@ -59,10 +59,11 @@ namespace EmployeesAPI.Controllers
                 return employeeList;
         }
 
-/*
+
         // PUT: api/Employees/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        [HttpPut("{id}")] 
+        //int id is provided in the search bar, and employee is coming from the postman text body
         public async Task<IActionResult> PutEmployee(int id, Employee employee)
         {
             if (id != employee.EmployeeId)
@@ -70,60 +71,81 @@ namespace EmployeesAPI.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(employee).State = EntityState.Modified;
+            var employeeFromDB = await _service.GetItemByIdAsync(id);
+            if (employeeFromDB == null)
+            {
+                return NotFound();
+            }
+
+            employeeFromDB.LastName = employee.LastName;
+            employeeFromDB.FirstName = employee.FirstName;
+            employeeFromDB.Title = employee.Title;
+            employeeFromDB.Region = employee.Region;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _service.SaveItemChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException) when (!_service.ItemExists(id))
             {
-                if (!EmployeeExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NotFound();
             }
 
-            return NoContent();
+            return Created("Update Complete", employee);
+
+            //_service.Entry(employee).State = EntityState.Modified;
+
+            //try
+            //{
+            //    await _context.SaveChangesAsync();
+            //}
+            //catch (DbUpdateConcurrencyException)
+            //{
+            //    if (!EmployeeExists(id))
+            //    {
+            //        return NotFound();
+            //    }
+            //    else
+            //    {
+            //        throw;
+            //    }
+            //}
+
+            //return NoContent();
         }
 
         // POST: api/Employees
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Employee>> PostEmployee(Employee employee)
+        public async Task<ActionResult<EmployeeDTO>> PostEmployee(EmployeeDTO employee)
         {
-            _context.Employees.Add(employee);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetEmployee", new { id = employee.EmployeeId }, employee);
+            await _service.CreateItemAsync(Utilities.DTOToEmployee(employee));
+            return CreatedAtAction( nameof(GetEmployee), new { id = employee.EmployeeId }, Utilities.DTOToEmployee(employee));
+            //ID doens't increment in the post method
         }
 
         // DELETE: api/Employees/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}")]//Decrement the id value form our db
         public async Task<IActionResult> DeleteEmployee(int id)
         {
-            var employee = await _context.Employees.FindAsync(id);
-            if (employee == null)
+            var employee = _service.GetItemByIdAsync(id);
+            employee.Wait();
+            if (employee.Result == null)
             {
                 return NotFound();
             }
 
-            _context.Employees.Remove(employee);
-            await _context.SaveChangesAsync();
+            await _service.RemoveItemAsync(employee.Result);
 
             return NoContent();
         }
 
-        private bool EmployeeExists(int id)
-        {
-            return _context.Employees.Any(e => e.EmployeeId == id);
-        }
+        //private bool EmployeeExists(int id)
+        //{
+        //    return _context.Employees.Any(e => e.EmployeeId == id);
+        //}
 
-       */
+
     }
 
 }

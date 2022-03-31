@@ -24,7 +24,7 @@ namespace EmployeeAPITesting
             var options = new DbContextOptionsBuilder<NorthwindContext>().UseInMemoryDatabase(databaseName: "ExampleDb").Options;
             _context = new NorthwindContext(options);
             _service = new EmployeeService(_context); //Service needs to be a Mock
-            _sut = new EmployeesController(_context);
+            //_sut = new EmployeesController(_context);
             foreach (Employee emp in TestEmpolyeesDataSource.EmployeesList)
             {
                 _service.CreateItemAsync(emp);
