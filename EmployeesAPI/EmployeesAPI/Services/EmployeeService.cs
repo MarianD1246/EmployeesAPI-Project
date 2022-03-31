@@ -7,6 +7,11 @@ public class EmployeeService : IRepository<Employee>
 {
     private readonly NorthwindContext _context;
 
+    public EmployeeService()
+    {
+        _context = new NorthwindContext();
+    }
+
     public EmployeeService(NorthwindContext context)
     {
         _context = context;
@@ -15,23 +20,23 @@ public class EmployeeService : IRepository<Employee>
     public async Task CreateItemAsync(Employee item)
     {
         _context.Employees.Add(item);
-        await _context.SaveChangesAsync();
+        await SaveItemChangesAsync();
     }
 
     //Why can't this method be async
-    public List<Employee> GetAllItemsAsync()
+    public List<Employee> GetAllItems()
     {
         return _context.Employees.ToList();
     }
 
 
-    public async Task<Employee> GetItemByIdAsync(long id)
+    public async Task<Employee> GetItemByIdAsync(int id)
     {
         return await _context.Employees.FindAsync(id);
     }
 
     //Make async?
-    public bool ItemExists(long id)
+    public bool ItemExists(int id)
     {
         return _context.Employees.Any(e => e.EmployeeId == id);
     }
@@ -39,10 +44,10 @@ public class EmployeeService : IRepository<Employee>
     public async Task RemoveItemAsync(Employee item)
     {
         _context.Employees.Remove(item);
-        await _context.SaveChangesAsync();
+        await SaveItemChangesAsync();
     }
 
-    public async Task SaveItemChangesAsync()
+    private async Task SaveItemChangesAsync()
     {
         await _context.SaveChangesAsync();
     }
@@ -52,4 +57,3 @@ public class EmployeeService : IRepository<Employee>
         throw new NotImplementedException();
     }
 }
-

@@ -1,16 +1,11 @@
 ﻿using EmployeesAPI;
-using EmployeesAPI.Model;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EmployeeAPITesting
 {
-    public class TestEmpolyeesDataSource
+    public static class TestEmpolyeesDataSource
     {
-        public List<Employee> employee = new()
+        public static List<Employee> EmployeesList { get; set; } = new List<Employee>()
         {
             new Employee()
             {
@@ -25,7 +20,7 @@ namespace EmployeeAPITesting
                 EmployeeId = 2,
                 FirstName = "Thomas",
                 LastName = "Brut",
-                Title = "Sales", 
+                Title = "Sales",
             },
             new Employee()
             {
@@ -42,7 +37,6 @@ namespace EmployeeAPITesting
                 Title = "Sales Representative",
                 Region = "WA"
             }
-
         };
     }
 }
