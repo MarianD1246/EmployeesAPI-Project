@@ -8,7 +8,6 @@ namespace EmployeesAPI.Services
         public List<T> GetAllItems();
         public Task<T> GetItemByIdAsync(int id);
         public Task CreateItemAsync(T item);
-        public Task SaveItemChangesAsync();
         public Task RemoveItemAsync(T item);
         public bool ItemExists(int id);
         object Select(Func<object, EmployeeDTO> p);

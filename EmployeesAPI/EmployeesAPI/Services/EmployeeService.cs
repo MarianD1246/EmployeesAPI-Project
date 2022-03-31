@@ -20,7 +20,7 @@ public class EmployeeService : IRepository<Employee>
     public async Task CreateItemAsync(Employee item)
     {
         _context.Employees.Add(item);
-        await _context.SaveChangesAsync();
+        await SaveItemChangesAsync();
     }
 
     //Why can't this method be async
@@ -44,10 +44,10 @@ public class EmployeeService : IRepository<Employee>
     public async Task RemoveItemAsync(Employee item)
     {
         _context.Employees.Remove(item);
-        await _context.SaveChangesAsync();
+        await SaveItemChangesAsync();
     }
 
-    public async Task SaveItemChangesAsync()
+    private async Task SaveItemChangesAsync()
     {
         await _context.SaveChangesAsync();
     }
@@ -57,4 +57,3 @@ public class EmployeeService : IRepository<Employee>
         throw new NotImplementedException();
     }
 }
-

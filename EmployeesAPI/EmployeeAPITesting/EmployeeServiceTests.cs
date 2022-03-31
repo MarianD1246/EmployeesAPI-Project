@@ -29,8 +29,7 @@ namespace EmployeeAPITesting
         [SetUp]
         public void SetUp()
         {
-            TestEmpolyeesDataSource employeesCollection = new();
-            foreach (var employee in employeesCollection.employeesList)
+            foreach (var employee in TestEmpolyeesDataSource.EmployeesList)
             {
                 _sut.CreateItemAsync(employee);
             }
@@ -62,15 +61,47 @@ namespace EmployeeAPITesting
         }
 
         [Test]
-        public void RemoveItemAsync_ShouldRemoveTheItem()
+        public void CreateItemAsync_ShouldAddAnEmployeeItem()
         {
+            Employee employee = new Employee() { FirstName = "Gaurav", LastName = "Dogra", Title = "CEO", Region = "WA" };
             int originalNumOfEmpoyee = _sut.GetAllItems().Count;
-            _sut.RemoveItemAsync(employeesCollection.employeesList[4]).Wait();
-            int result = _sut.GetAllItems().count;
-            Assert.That(result, Is.EqualTo(originalNumOfEmpoyee - 1));
+            _sut.CreateItemAsync(employee).Wait();
+            int countAfterAdd = _sut.GetAllItems().Count;
+            Assert.That(countAfterAdd, Is.EqualTo(originalNumOfEmpoyee + 1));
         }
 
-        //teardown
+        [Test]
+        public void ItemExists_ShouldReturnFalseIfEmployeeNotExist()
+        {
+            var doesNotExist = _sut.ItemExists(7);
+            Assert.That(doesNotExist, Is.False);
+        }
+        
+        [Test]
+        public void ItemExists_ShouldReturnTrueIfEmployeeExist()
+        {
+            var doesNotExist = _sut.ItemExists(1);
+            Assert.That(doesNotExist, Is.True);
+        }
+
+        [Test]
+        public void RemoveItemAsyncByItem_ShouldRemoveTheItem()
+        {
+            int originalNumOfEmpoyee = _sut.GetAllItems().Count;
+            _sut.RemoveItemAsync(TestEmpolyeesDataSource.EmployeesList[3]).Wait();
+            int countAfterRemove = _sut.GetAllItems().Count;
+            Assert.That(countAfterRemove, Is.EqualTo(originalNumOfEmpoyee - 1));
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            //Find a function to clear all items from _sut
+            foreach(var item in _sut.GetAllItems())
+            {
+                _sut.RemoveItemAsync(item);
+            }
+        }
 
     }
 }
