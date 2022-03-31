@@ -23,83 +23,44 @@ namespace EmployeesAPI.Controllers
             _context = context;
         }
 
-        // GET: api/Employees
-        [HttpGet("all")]
-        public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetEmployees()
-        {
-            var employee = await _context.Employees.Select(x => Utilities.EmployeeToDTO(x)).ToListAsync();
-            return employee;
-        }
-
         // GET: api/Employees contains all employee searches
         [HttpGet]
-        public async Task<ActionResult<Employee>> GetEmployee()
+        public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetEmployee()
         {
+            List<EmployeeDTO> employeeList = new();
             Employee employee = new();
-            if (Int32.TryParse(HttpContext.Request.Query["id"], out int id))
+
+            var surnameQuery = HttpContext.Request.Query["surname"];
+            var firstNameQuery = HttpContext.Request.Query["firstname"];
+            var cityQuery = HttpContext.Request.Query["city"];
+            var jobTitleQuery = HttpContext.Request.Query["jobtitle"];
+            var idQuery = HttpContext.Request.Query["id"];
+
+            if (Int32.TryParse(idQuery, out int id))
             {
-              employee = await _context.Employees.FindAsync(id);
+                return await GetById(id);
+            }
+            else if (!String.IsNullOrEmpty(surnameQuery))
+            {
+                return await GetByName(surnameQuery.ToString(), firstNameQuery);
+            }
+            else if (!String.IsNullOrEmpty(cityQuery))
+            {
+                var city = cityQuery.ToString();
+                employeeList = (await _context.Employees.Where(e => e.City == city).Select(e => Utilities.EmployeeToDTO(e)).ToListAsync());
+            }
+            else if (!String.IsNullOrEmpty(jobTitleQuery))
+            {
+                var jobTitle = jobTitleQuery.ToString();
+                employeeList = await _context.Employees.Where(e => e.Title == jobTitle.Replace('-', ' ')).Select(e => Utilities.EmployeeToDTO(e)).ToListAsync();
             }
             else
             {
-                return NotFound();
+                employeeList = await _context.Employees.Select(x => Utilities.EmployeeToDTO(x)).ToListAsync();
             }
 
-            return employee;
-        }
-
-        //GET Employees by Surname
-        [HttpGet("name_search/")]
-        public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetEmployeesByName()
-        {
-            var lastName = HttpContext.Request.Query["surname"].ToString();
-            var employee = await _context.Employees.Where(e => e.LastName == lastName).OrderBy(e => e.FirstName).Select(e => Utilities.EmployeeToDTO(e)).ToListAsync();
-
-            if (employee == null)
-            {
-                return NotFound();
-            }
-
-            return employee;
-        }
-
-        //GET Employee by Full name
-        [HttpGet("name_search/")]
-        public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetEmployeesByFullName()
-        {
-            var lastName = HttpContext.Request.Query["surname"].ToString();
-            var firstName = HttpContext.Request.Query["firstname"].ToString();
-            var employee = await _context.Employees.Where(e => e.LastName == lastName && e.FirstName == firstName).Select(e => Utilities.EmployeeToDTO(e)).ToListAsync(); 
-
-            if (employee == null)
-            {
-                return NotFound();
-            }
-
-            return employee;
-        }
-
-        //GET Employee by Job Title
-        [HttpGet("jobtitle_search/")]
-        public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetEmployeesByJobTitle()
-        {
-            var jobTitle = HttpContext.Request.Query["jobtitle"].ToString();
-            var employee = await _context.Employees.Where(e => e.Title == jobTitle.Replace('-',' ')).Select(e => Utilities.EmployeeToDTO(e)).ToListAsync();
-
-            if (employee == null)
-            {
-                return NotFound();
-            }
-
-            return employee;
-        }
-
-        //GET: api/employees/city/London 
-        [HttpGet("city/{city}")]
-        public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetEmployeesByCity(string city)
-        {
-            var employee = await _context.Employees.Where(e => e.City == city).Select(e => Utilities.EmployeeToDTO(e)).ToListAsync();
-            return employee; 
+            if (employeeList.Count == 0) return NotFound();
+            else return employeeList;
         }
 
 
@@ -165,49 +126,31 @@ namespace EmployeesAPI.Controllers
         {
             return _context.Employees.Any(e => e.EmployeeId == id);
         }
+
+        public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetById(int id)
+        {
+            List<EmployeeDTO> employeeList = new();
+
+            Employee employee = (await _context.Employees.FindAsync(id));
+            if (employee != null)
+            {
+                employeeList.Add(Utilities.EmployeeToDTO(employee));
+                return employeeList;
+            }
+            else return NotFound();
+        }
+
+        public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetByName(string lastName, Microsoft.Extensions.Primitives.StringValues firstNameQuery)
+        {
+            List<EmployeeDTO> employeeList = new();
+            if (!String.IsNullOrEmpty(firstNameQuery))
+            {
+                var firstName = firstNameQuery.ToString();
+                employeeList = await _context.Employees.Where(e => e.LastName == lastName && e.FirstName == firstName).Select(e => Utilities.EmployeeToDTO(e)).ToListAsync();
+            }
+            else employeeList = await _context.Employees.Where(e => e.LastName == lastName).Select(e => Utilities.EmployeeToDTO(e)).ToListAsync();
+
+            return employeeList;
+        }
     }
 }
-
-
-// GET: api/Employees/id/5
-//[HttpGet("id/{id:int:min(1)}")]
-//public async Task<ActionResult<Employee>> GetEmployee(int id)
-//{
-//    var employee = await _context.Employees.FindAsync(id);
-
-//    if (employee == null)
-//    {
-//        return NotFound();
-//    }
-
-//    return employee;
-//}
-
-//// GET: api/Employees/id/5 
-//[HttpGet("id/")]
-//public async Task<ActionResult<Employee>> GetEmployee()
-//{
-//    var employee = await _context.Employees.FindAsync(Int32.Parse(HttpContext.Request.Query["id"]));
-
-//    if (employee == null)
-//    {
-//        return NotFound();
-//    }
-
-//    return employee;
-//}
-
-////GET Employees by Surname
-//[HttpGet("name_search/")]
-//public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetEmployeesByName()
-//{
-//    var lastName = HttpContext.Request.Query["surname"].ToString();
-//    var employee = await _context.Employees.Where(e => e.LastName == lastName).OrderBy(e => e.FirstName).Select(e => Utilities.EmployeeToDTO(e)).ToListAsync();
-
-//    if (employee == null)
-//    {
-//        return NotFound();
-//    }
-
-//    return employee;
-//}
