@@ -31,9 +31,9 @@ namespace EmployeesAPI.Controllers
             return employee;
         }
 
-        // GET: api/Employees/id/5
-        [HttpGet("id/{id}")]
-        public async Task<ActionResult<Employee>> GetEmployee(int id)
+        // GET: api/Employees/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Employee>> GetEmployeeById(int id)
         {
             var employee = await _context.Employees.FindAsync(id);
 
