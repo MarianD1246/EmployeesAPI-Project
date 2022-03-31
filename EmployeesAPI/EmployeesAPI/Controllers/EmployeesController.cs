@@ -39,7 +39,7 @@ namespace EmployeesAPI.Controllers
             if (Int32.TryParse(HttpContext.Request.Query["id"], out int id))
             {
                 employeeList.Add(Utilities.EmployeeToDTO(await _context.Employees.FindAsync(id)));
-                if (employeeList == null)
+                if (employeeList == null || employeeList.Count == 0)
                 {
                     return NotFound();
                 }
@@ -48,7 +48,7 @@ namespace EmployeesAPI.Controllers
             {
                 var lastName = HttpContext.Request.Query["surname"].ToString();
                 employeeList = await _context.Employees.Where(e => e.LastName == lastName).OrderBy(e => e.FirstName).Select(e => Utilities.EmployeeToDTO(e)).ToListAsync();
-                if (employeeList == null) return NotFound();
+                if (employeeList == null || employeeList.Count == 0) return NotFound();
             }
             else if (!String.IsNullOrEmpty(HttpContext.Request.Query["surname"]) && !String.IsNullOrEmpty(HttpContext.Request.Query["firstname"]))
             {
@@ -60,6 +60,17 @@ namespace EmployeesAPI.Controllers
                 if (employeeList == null || employeeList.Count == 0)
                 {
                     
+                    return NotFound();
+                }
+            }
+            else if (!String.IsNullOrEmpty(HttpContext.Request.Query["jobtitle"]))
+            {
+                var jobTitle = HttpContext.Request.Query["jobtitle"].ToString();
+
+                employeeList = await _context.Employees.Where(e => e.Title == jobTitle.Replace('-', ' ')).OrderBy(e => e.FirstName).Select(e => Utilities.EmployeeToDTO(e)).ToListAsync();
+                if (employeeList == null || employeeList.Count == 0)
+                {
+
                     return NotFound();
                 }
             }
