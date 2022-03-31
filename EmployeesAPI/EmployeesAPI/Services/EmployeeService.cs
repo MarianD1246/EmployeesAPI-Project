@@ -52,7 +52,7 @@ public class EmployeeService : IRepository<Employee>
         await _context.SaveChangesAsync();
     }
 
-    public object Select(Func<object, EmployeeDTO> p)
+    public object Select(Func<object, Employee> p)
     {
         throw new NotImplementedException();
     }

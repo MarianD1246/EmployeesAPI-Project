@@ -16,54 +16,50 @@ namespace EmployeesAPI.Controllers
     [ApiController]
     public class EmployeesController : ControllerBase
     {
-        private readonly NorthwindContext _context;
+        private readonly IRepository<Employee> _service;
 
-        public EmployeesController(NorthwindContext context)
+        public EmployeesController(IRepository<Employee> repository)
         {
-            _context = context;
+            _service = repository;
         }
 
         // GET: api/Employees contains all employee searches
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetEmployee()
-        {
-            List<EmployeeDTO> employeeList = new();
-            Employee employee = new();
+        public async Task<ActionResult<IEnumerable<Employee>>> GetEmployee()
+        { 
+            List<Employee> employeeList = new();
+            //Employee employee = new();
 
-            var surnameQuery = HttpContext.Request.Query["surname"];
-            var firstNameQuery = HttpContext.Request.Query["firstname"];
-            var cityQuery = HttpContext.Request.Query["city"];
-            var jobTitleQuery = HttpContext.Request.Query["jobtitle"];
-            var idQuery = HttpContext.Request.Query["id"];
+          //  var cityQuery = HttpContext.Request.Query["city"];
+          //  var jobTitleQuery = HttpContext.Request.Query["jobtitle"];
+              var idQuery = HttpContext.Request.Query["id"];
 
             if (Int32.TryParse(idQuery, out int id))
             {
-                return await GetById(id);
+                employeeList.Add(_service.GetItemByIdAsync(id).Result);
             }
-            else if (!String.IsNullOrEmpty(surnameQuery))
-            {
-                employeeList = await GetByName(surnameQuery.ToString(), firstNameQuery);
-            }
-            else if (!String.IsNullOrEmpty(cityQuery))
-            {
-                var city = cityQuery.ToString();
-                employeeList = (await _context.Employees.Where(e => e.City == city).Select(e => Utilities.EmployeeToDTO(e)).ToListAsync());
-            }
-            else if (!String.IsNullOrEmpty(jobTitleQuery))
-            {
-                var jobTitle = jobTitleQuery.ToString();
-                employeeList = await _context.Employees.Where(e => e.Title == jobTitle.Replace('-', ' ')).Select(e => Utilities.EmployeeToDTO(e)).ToListAsync();
-            }
+            
+            //else if (!String.IsNullOrEmpty(cityQuery))
+            //{
+            //    var city = cityQuery.ToString();
+            //    employeeList = (await _context.Employees.Where(e => e.City == city).Select(e => Utilities.EmployeeToDTO(e)).ToListAsync());
+            //}
+            //else if (!String.IsNullOrEmpty(jobTitleQuery))
+            //{
+            //    var jobTitle = jobTitleQuery.ToString();
+            //    employeeList = await _context.Employees.Where(e => e.Title == jobTitle.Replace('-', ' ')).Select(e => Utilities.EmployeeToDTO(e)).ToListAsync();
+            //}
             else
             {
-                employeeList = await _context.Employees.Select(x => Utilities.EmployeeToDTO(x)).ToListAsync();
-            }
+              return _service.GetAllItems(); 
+           }
 
-            if (employeeList.Count == 0) return NotFound();
-            else return employeeList;
+         //   if (employeeList.Count == 0) return NotFound();
+          //  else 
+                return employeeList;
         }
 
-
+/*
         // PUT: api/Employees/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -127,29 +123,7 @@ namespace EmployeesAPI.Controllers
             return _context.Employees.Any(e => e.EmployeeId == id);
         }
 
-        public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetById(int id)
-        {
-            List<EmployeeDTO> employeeList = new();
-
-            Employee employee = (await _context.Employees.FindAsync(id));
-            if (employee != null)
-            {
-                employeeList.Add(Utilities.EmployeeToDTO(employee)); 
-            }
-            return employeeList;
-        }
-
-        public async Task<List<EmployeeDTO>> GetByName(string lastName, Microsoft.Extensions.Primitives.StringValues firstNameQuery)
-        {
-            List<EmployeeDTO> employeeList = new();
-            if (!String.IsNullOrEmpty(firstNameQuery))
-            {
-                var firstName = firstNameQuery.ToString();
-                employeeList = await _context.Employees.Where(e => e.LastName == lastName && e.FirstName == firstName).Select(e => Utilities.EmployeeToDTO(e)).ToListAsync();
-            }
-            else employeeList = await _context.Employees.Where(e => e.LastName == lastName).Select(e => Utilities.EmployeeToDTO(e)).ToListAsync();
-
-            return employeeList;
-        }
+       */
     }
+
 }
