@@ -49,11 +49,10 @@ The tests themselves aernt dependant on the Northwind database being installed o
 * Relatively new to mocking and dependency inversions so tests may not be as rigourous and thorough as they should be.
 * Difficulties rewriting controller due to dependency inversions. 
 * Balancing the workload vs the time constraint.
-
+* External Dependencies being located in different places leading to issues when pulling/push ie the connection strings
 ## What we have learned
 * We now know how to create a web API.
-* Moq
-* Writing tests for API's
+* Mocking API and Database elements tests for API's
 * SQL
 * API's
 * More experience working under time constraints.
