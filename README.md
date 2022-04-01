@@ -7,11 +7,12 @@ This project is to build a REST API application for the Northwind database, with
 * How are errors handled? - if the user enters an invalid parameter, what should be returned?
 
 ## Setup 
-1. Clone the repository at https://github.com/MarianD1246/EmployeesAPI-Project.git 
-2. Startup the solution in Visual Studio 2022.
-3. Run the solution in debug mode.
-4. A webpage will load to the default route listing all employees.
-5. Alternatively you can look up the API documentation at https://localhost:<port>/ (replace <port> with your port number).
+1. Download Visual Studio 2022.
+2. Clone the repository: https://github.com/MarianD1246/EmployeesAPI-Project.git 
+3. Startup the solution in Visual Studio 2022.
+4. Run the solution in debug mode.
+5. A webpage will load to the default route listing all employees.
+6. Alternatively you can look up the API documentation at https://localhost:<port> /(replace <port> with your port number).
 
 We also had the following requiremed the use of DTOs to return the desired information for each call. Along with the following optional requirements:
 * SwaggerUI documentation 
