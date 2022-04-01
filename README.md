@@ -45,6 +45,16 @@ We also had the following requiremed the use of DTOs to return the desired infor
 ## Running tests
 The tests themselves aernt dependant on the Northwind database being installed on your machine so you will be able to run them without it being correctly installed.
 
+# API Examples
+
+## Get Request 1
+![Get Request 1](https://github.com/MarianD1246/EmployeesAPI-Project/blob/Doucmentation-Branch/Images/Get1.png)
+
+## Get Request 2
+![Get Request 2](https://github.com/MarianD1246/EmployeesAPI-Project/blob/Doucmentation-Branch/Images/Get2.png)
+
+## Swagger Documentation
+![Swagger Docs](https://github.com/MarianD1246/EmployeesAPI-Project/blob/Doucmentation-Branch/Images/SwaggerDocs.png)
 
 # Retrospective
 ## Challenges
