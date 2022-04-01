@@ -56,14 +56,14 @@ namespace EmployeeAPITesting
             var result = _sut.GetAllItems();
             Assert.That(result.Count, Is.EqualTo(4));
             Assert.That(result, Is.Not.Null);
-            Assert.That(result, Is.TypeOf<List<Employee>>());
+            Assert.That(result, Is.TypeOf<List<EmployeeDTO>>());
 
         }
 
         [Test]
         public void CreateItemAsync_ShouldAddAnEmployeeItem()
         {
-            Employee employee = new Employee() { FirstName = "Gaurav", LastName = "Dogra", Title = "CEO", Region = "WA" };
+            Employee employee = new Employee() { EmployeeId = 6, FirstName = "Gaurav", LastName = "Dogra", Title = "CEO", Region = "WA" };
             int originalNumOfEmpoyee = _sut.GetAllItems().Count;
             _sut.CreateItemAsync(employee).Wait();
             int countAfterAdd = _sut.GetAllItems().Count;
