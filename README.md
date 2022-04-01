@@ -58,7 +58,7 @@ The tests themselves aernt dependant on the Northwind database being installed o
 * More experience working under time constraints.
 ## Mood Diagram
 
-[Mood Seismograph](https://github.com/MarianD1246/EmployeesAPI-Project/blob/Doucmentation-Branch/MicrosoftTeams-image%20(1).png)
+![Mood Seismograph](https://github.com/MarianD1246/EmployeesAPI-Project/blob/Doucmentation-Branch/MicrosoftTeams-image%20(1).png)
 
 
 
