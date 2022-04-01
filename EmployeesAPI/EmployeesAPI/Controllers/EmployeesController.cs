@@ -39,18 +39,18 @@ namespace EmployeesAPI.Controllers
 
             if (!String.IsNullOrEmpty(cityQuery))
             {
-                Predicate<Employee> predicate = e => e.City.Equals(cityQuery.ToString());
-                employeeList = _service.GetItemByPredicateAsync(predicate);    
+                Predicate<Employee> predicate = e => e.City.ToLower().Equals(cityQuery.ToString().ToLower());
+                employeeList = _service.GetItemByPredicateAsync(predicate);
             }
             else if (!String.IsNullOrEmpty(countryQuery))
             {
-                Predicate<Employee> predicate = e => e.Country.Equals(countryQuery.ToString());
+                Predicate<Employee> predicate = e => e.Country.ToLower().Equals(countryQuery.ToString().ToLower());
                 employeeList = _service.GetItemByPredicateAsync(predicate);
             }
-            else employeeList = _service.GetAllItems(); 
-            
-            if (employeeList.Count == 0) return BadRequest();
-            else return employeeList;
+            else return _service.GetAllItems();
+
+            if (!employeeList.Any()) return BadRequest();
+            else return Created("Get Complete", employeeList);
         }
 
         // PUT: api/Employees/5

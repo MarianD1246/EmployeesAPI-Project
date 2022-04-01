@@ -19,8 +19,8 @@ namespace EmployeeAPITesting
 
         private Mock<IRepository<Employee>> _service;
         private EmployeesController _sut;
-        [OneTimeSetUp]
-        public void OneTimeSetup()
+        [SetUp]
+        public void Setup()
         {
             _service = new Mock<IRepository<Employee>>();
             _sut = new EmployeesController(_service.Object);
@@ -32,13 +32,13 @@ namespace EmployeeAPITesting
 
 
         [Test]
-        public void EmpolyeesControllerSuccessfulConstruction()
+        public void EmployeesControllerSuccessfulConstruction()
         {
             Assert.That(_sut, Is.InstanceOf<EmployeesController>());
         }
 
         [Test]
-        public void GetEmpoyee_HappyPath_ReturnAListOfEmpoyee()
+        public void GetEmployee_ReturnAListOfEmployee_WhenQueryIsValid()
         {
             EmployeeDTO employee = new() { EmployeeId = 1, Name = "Dodsworth Annie", JobTitle = "Sales Representative" };
             List<EmployeeDTO> dtoList = new() { employee };
@@ -49,14 +49,13 @@ namespace EmployeeAPITesting
         }
 
         [Test]
-        public void GetEmpoyee_SadPath_ReturnBadRequest()
+        public void GetEmployee_DoesNotReturnAnEmployee_WhenQueryIsInvalid()
         {
-            EmployeeDTO employee = new() { EmployeeId = 1, Name = "Dodsworth Annie", JobTitle = "Sales Representative" };
-            _service.Setup(x => x.GetAllItems()).Returns(new List<EmployeeDTO>());
+            _service.Setup(x => x.GetAllItems());
             var result = _sut.GetEmployee();
             Assert.That(result.IsCompleted);
             _service.Verify(cs => cs.GetAllItems(), Times.Never);
-            //Assert.That(result, Is.InstanceOf<BadRequestResult>()); //bad request in getEmpoyee is unreachable code
+            //Assert.That(result, Is.InstanceOf<BadRequestResult>()); 
         }
 
         [Test]
@@ -69,7 +68,7 @@ namespace EmployeeAPITesting
             
         }
         [Test]
-        public void PutEmployee_GivenAValidName_ReturnsEmpolyee()
+        public void PutEmployee_GivenAValidName_UpdatesEmplolyee()
         {
             Employee employee = new Employee() { EmployeeId = 1, LastName = "Dodsworth", FirstName = "Annie", Title = "Sales Representative", Region = "WA" };
             _service.Setup(e => e.GetItemByIdAsync(It.IsAny<int>())).ReturnsAsync(employee);
@@ -81,19 +80,31 @@ namespace EmployeeAPITesting
         }
 
         [Test]
-        public void ReturnNoContentResult_WhenUpdateIsCalled_WithValidId()
+        public void PostEmployee_AddsAnEmployee_GivenValidInfo()
         {
-            // Arrange
-            //var mockService = new Mock<ITodoItemService>();
-            //var item = new TodoItem { Id = 1, IsComplete = true, Name = "Sweep hallway", Secret = "I don't live here" };
-            //mockService.Setup(cs => cs.GetTodoItemByIdAsync(1)).ReturnsAsync(item);
-            //_sut = new TodoItemsController(mockService.Object);
-            //// Act
-            //var result = _sut.UpdateTodoItem(1, new TodoItemDTO { Id = 1, IsComplete = false });
-
-            //// Assert
-            //Assert.That(result.Result, Is.InstanceOf<NoContentResult>());
+            Employee employee = new Employee() { LastName = "Dodsworth", FirstName = "Annie", Title = "Sales Representative", Region = "WA" };
+            var result = _sut.PostEmployee(Utilities.EmployeeToDTO(employee));
+            Assert.That(result.IsCompleted);
+            Assert.That(result.Result, Is.InstanceOf<ActionResult<EmployeeDTO>>());
+            Assert.That(result.Result.Result, Is.InstanceOf<CreatedAtActionResult>());
         }
 
+        [Test]
+        public void DeleteEmployee_GivenInvalidInvalid_ResultNotFound()
+        {
+            var result = _sut.DeleteEmployee(10);
+            Assert.That(result.IsCompleted);
+            Assert.That(result.Result, Is.InstanceOf<NotFoundResult>());
+        }
+
+        [Test]
+        public void DeleteEmployee_GivenValidId_DeleteEmpoyee()
+        {
+            Employee employee = new Employee() { EmployeeId = 1, LastName = "Dodsworth", FirstName = "Annie", Title = "Sales Representative", Region = "WA" };
+            _service.Setup(e => e.GetItemByIdAsync(It.IsAny<int>())).ReturnsAsync(employee);
+            var result = _sut.DeleteEmployee(10);
+            Assert.That(result.IsCompleted);
+            Assert.That(result.Result, Is.InstanceOf<NoContentResult>());
+        }
     }
 }
