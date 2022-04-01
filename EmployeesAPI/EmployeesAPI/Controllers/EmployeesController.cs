@@ -22,20 +22,22 @@ namespace EmployeesAPI.Controllers
             _service = repository;
         }
 
+        [HttpGet("id/{id:int}")]
+        public async Task<ActionResult<SpecificEmployeeDTO>> SpecificEmployee(int id)
+        {
+            return Utilities.SpecificEmployeeToDTO(await _service.GetItemByIdAsync(id));           
+        }
+
         // GET: api/Employees contains all employee searches
         [HttpGet]
         public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetEmployee()
         { 
             List<EmployeeDTO> employeeList = new();
+           
             var cityQuery = HttpContext.Request.Query["city"];
             var countryQuery = HttpContext.Request.Query["country"];
-            var idQuery = HttpContext.Request.Query["id"];
 
-            if (Int32.TryParse(idQuery, out int id))
-            {
-                employeeList.Add(Utilities.EmployeeToDTO(await _service.GetItemByIdAsync(id)));
-            }
-            else if (!String.IsNullOrEmpty(cityQuery))
+            if (!String.IsNullOrEmpty(cityQuery))
             {
                 Predicate<Employee> predicate = e => e.City.Equals(cityQuery.ToString());
                 employeeList = _service.GetItemByPredicateAsync(predicate);    

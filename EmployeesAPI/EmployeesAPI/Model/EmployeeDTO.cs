@@ -10,10 +10,5 @@ namespace EmployeesAPI.Model
         public string? FullAddress { get; set; }
         public string? PhoneNumber { get; set; }
         public string? WorkExtension { get; set; }
-        public DateTime? HireDate { get; set; }
-        public string? Notes { get; set; }
-
-        //Age from DateTime to int
-
     }
 }

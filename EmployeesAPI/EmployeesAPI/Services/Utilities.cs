@@ -14,6 +14,20 @@ namespace EmployeesAPI.Services
                 FullAddress = $"{employee.Address},{employee.City},{employee.PostalCode},{employee.Region},{employee.Country}",
                 PhoneNumber = employee.HomePhone,
                 WorkExtension = employee.Extension,
+
+            };
+        }
+
+        public static SpecificEmployeeDTO SpecificEmployeeToDTO(Employee employee)
+        {
+            return new SpecificEmployeeDTO
+            {
+                EmployeeId = employee.EmployeeId,
+                Name = $"{employee.TitleOfCourtesy} {employee.FirstName} {employee.LastName}",
+                JobTitle = employee.Title,
+                FullAddress = $"{employee.Address},{employee.City},{employee.PostalCode},{employee.Region},{employee.Country}",
+                PhoneNumber = employee.HomePhone,
+                WorkExtension = employee.Extension,
                 HireDate = employee.HireDate,
                 Notes = employee.Notes,
             };
@@ -35,8 +49,7 @@ namespace EmployeesAPI.Services
                 Country = employee.FullAddress.Split(',')[4],
                 Extension = employee.WorkExtension,
                 HomePhone = employee.PhoneNumber,
-                HireDate = employee.HireDate,
-                Notes = employee.Notes,
+
             };
         }
 
