@@ -51,9 +51,12 @@ The tests themselves aernt dependant on the Northwind database being installed o
 * Balancing the workload vs the time constraint.
 
 ## What we have learned
-
-
-
+We now know how to create a web API.
+Moq
+Writing tests for API's
+SQL
+API's
+More experience working under time constraints.
 ## Mood Diagram
 
 
