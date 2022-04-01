@@ -1,5 +1,11 @@
 # EmployeesAPI-Project
 
+## Contributors
+- Marian Dumitriu - GitGuru and Lead Tester
+- Gaurav Dogra - Lead Dev and Tester
+- James Dickson - Lead Dev 
+- Steven Maddox - Dev 
+- Stanni Lewis - Product Owner/Scrum Master
 ## Description
 This project is to build a REST API application for the Northwind database, with the API exposing useful information and functionality around Employees. The project has made use of Scrum (a single backlog/sprint) for project management. 
 
@@ -29,18 +35,42 @@ We also had the following requiremed the use of DTOs to return the desired infor
 ## Technologies used
 * C#
 * Visual Studio
+* Git/Github
+* Entity Framework
+* SQL
+* Swagger
+* Moq InMemoryDatabse. 
 
-## Challenges
-
-## What we have learned
 
 ## Running tests
 The tests themselves aernt dependant on the Northwind database being installed on your machine so you will be able to run them without it being correctly installed.
 
-## Potential bugs and fixes
+# API Examples
 
-## Contributors
+## Get Request 1
+![Get Request 1](https://github.com/MarianD1246/EmployeesAPI-Project/blob/Doucmentation-Branch/Images/Get1.png)
 
+## Get Request 2
+![Get Request 2](https://github.com/MarianD1246/EmployeesAPI-Project/blob/Doucmentation-Branch/Images/Get2.png)
+
+## Swagger Documentation
+![Swagger Docs](https://github.com/MarianD1246/EmployeesAPI-Project/blob/Doucmentation-Branch/Images/SwaggerDocs.png)
+
+# Retrospective
+## Challenges
+* Communication between sub teams was sometimes strained, and led to mixups. 
+* Hyperfocus on certain elements of the project over a more holistic approach leading to a relatively thin API
+* Relatively new to mocking and dependency inversions so tests may not be as rigourous and thorough as they should be.
+* Difficulties rewriting controller due to dependency inversions. 
+* Balancing the workload vs the time constraint.
+* External Dependencies being located in different places leading to issues when pulling/push ie the connection strings
+## What we have learned
+* We now know how to create a web API.
+* Mocking API and Database elements tests for API's
+* More experience working under time constraints.
+## Mood Diagram
+
+![Mood Seismograph](https://github.com/MarianD1246/EmployeesAPI-Project/blob/Doucmentation-Branch/MicrosoftTeams-image%20(1).png)
 
 
 
