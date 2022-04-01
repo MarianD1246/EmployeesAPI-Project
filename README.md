@@ -2,7 +2,7 @@
 
 ## Contributors
 - Marian Dumitriu - GitGuru and Lead Tester
-- Guarav Dogra - Lead Dev and Tester
+- Gaurav Dogra - Lead Dev and Tester
 - James Dickson - Lead Dev 
 - Steven Maddox - Dev 
 - Stanni Lewis - Product Owner/Scrum Master
