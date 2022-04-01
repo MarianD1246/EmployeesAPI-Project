@@ -63,8 +63,9 @@ namespace EmployeeAPITesting
         [Test]
         public void CreateItemAsync_ShouldAddAnEmployeeItem()
         {
-            Employee employee = new Employee() { EmployeeId = 6, FirstName = "Gaurav", LastName = "Dogra", Title = "CEO", Region = "WA" };
             int originalNumOfEmpoyee = _sut.GetAllItems().Count;
+            Employee employee = new Employee() { EmployeeId = originalNumOfEmpoyee + 1, FirstName = "Gaurav", LastName = "Dogra", Title = "CEO", Region = "WA" };
+           
             _sut.CreateItemAsync(employee).Wait();
             int countAfterAdd = _sut.GetAllItems().Count;
             Assert.That(countAfterAdd, Is.EqualTo(originalNumOfEmpoyee + 1));
@@ -73,7 +74,7 @@ namespace EmployeeAPITesting
         [Test]
         public void ItemExists_ShouldReturnFalseIfEmployeeNotExist()
         {
-            var doesNotExist = _sut.ItemExists(7);
+            var doesNotExist = _sut.ItemExists(70);
             Assert.That(doesNotExist, Is.False);
         }
         
@@ -88,7 +89,7 @@ namespace EmployeeAPITesting
         public void RemoveItemAsyncByItem_ShouldRemoveTheItem()
         {
             int originalNumOfEmpoyee = _sut.GetAllItems().Count;
-            _sut.RemoveItemAsync(TestEmpolyeesDataSource.EmployeesList[3]).Wait();
+            _sut.RemoveItemAsync(TestEmpolyeesDataSource.EmployeesList[originalNumOfEmpoyee-1]).Wait();
             int countAfterRemove = _sut.GetAllItems().Count;
             Assert.That(countAfterRemove, Is.EqualTo(originalNumOfEmpoyee - 1));
         }
