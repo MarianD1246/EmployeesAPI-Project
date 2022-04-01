@@ -17,38 +17,32 @@ namespace EmployeeAPITesting
     public class EmployeeControllerTests
     {
 
-        private Mock<NorthwindContext>? _context;
+        private Mock<IRepository<Employee>> _context;
         private EmployeesController _sut;
         [OneTimeSetUp]
         public void OneTimeSetup()
         {
-            //_context = new Mock<NorthwindContext>();
-            //_context.Setup(e => e.Employees.AddRange(TestEmpolyeesDataSource.EmployeesList.ToArray()));
-            //_sut = new EmployeesController(_context.Object);
+            _context = new Mock<IRepository<Employee>>();
+            TestEmpolyeesDataSource.EmployeesList.ForEach(e => _context.Setup(x => x.CreateItemAsync(e)));
+            _sut = new EmployeesController(_context.Object);
         }
 
         [Test]
         public void EmpolyeesControllerSuccessfulConstruction()
         {
-            //Assert.That(_sut, Is.InstanceOf<EmployeesController>());
+            Assert.That(_sut, Is.InstanceOf<EmployeesController>());
         }
 
         [Test]
-        public void GetById_GivenAValidId_ReturnsEmpolyee()
+        public void PutEmployee_GivenAInvalidId_ReturnsBadRequest()
         {
-            //var getEmployeeById = _sut.GetById(1);
-            //Assert.That(getEmployeeById.IsCompleted);
-            //Assert.That(getEmployeeById.Result.Value, Is.InstanceOf<IEnumerable<EmployeeDTO>>());
-            //var emp = getEmployeeById.Result.Value.ToList();
-            //Assert.That(emp[0], Is.EqualTo(TestEmpolyeesDataSource.EmployeesList[0]));
-            
-            //var result = _sut.GetEmployeeById(0).Result;
-            //Assert.That(result, Is.Not.Null);
-            //Assert.That(result.Value, Is.TypeOf<Employee>());
-            //Assert.That(result.Value.FirstName, Is.EqualTo("Bob"));
+            Employee employee = new Employee() { LastName = "Dodsworth", FirstName = "Annie", Title = "Sales Representative", Region = "WA" };
+            var result = _sut.PutEmployee(10, employee);
+            Assert.That(result.IsCompleted);
+            Assert.That(result.Result, Is.InstanceOf<BadRequestResult>());;
         }
         [Test]
-        public void PutEmployee_GivenAValidName_ReturnsEmpolyee()
+        public void PutEmployee_GivenAValidId_ReturnCreated()
         {
             //var Getemployeename = _sut.GetByName();
             //Assert.That(Getemployeename.IsCompleted);
