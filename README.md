@@ -29,6 +29,9 @@ We also had the following requiremed the use of DTOs to return the desired infor
 ## Technologies used
 * C#
 * Visual Studio
+* Git/Github
+* Entity Framework
+* SQL
 
 ## Challenges
 
