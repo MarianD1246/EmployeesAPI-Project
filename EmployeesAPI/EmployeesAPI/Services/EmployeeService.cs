@@ -24,9 +24,15 @@ public class EmployeeService : IRepository<Employee>
     }
 
     //Why can't this method be async
-    public List<Employee> GetAllItems()
+    public List<EmployeeDTO> GetAllItems()
     {
-        return _context.Employees.ToList();
+        List<EmployeeDTO> listOfDTO = new();
+        List<Employee> rawEmployees = _context.Employees.ToList();
+        foreach(Employee emp in rawEmployees)
+        {
+            listOfDTO.Add(Utilities.EmployeeToDTO(emp));
+        }
+        return listOfDTO;
     }
 
 
@@ -36,9 +42,15 @@ public class EmployeeService : IRepository<Employee>
         return await _context.Employees.FindAsync(id);
     }
 
-    public List<Employee> GetItemByPredicateAsync(Predicate<Employee> predicate)
+    public List<EmployeeDTO> GetItemByPredicateAsync(Predicate<Employee> predicate)
     {
-        return _context.Employees.ToList().FindAll(predicate);
+        List<EmployeeDTO> listOfDTO = new();
+        List<Employee> rawEmployees = _context.Employees.ToList().FindAll(predicate);
+        foreach (Employee emp in rawEmployees)
+        {
+            listOfDTO.Add(Utilities.EmployeeToDTO(emp));
+        }
+        return listOfDTO;
     }
 
     //Make async?
