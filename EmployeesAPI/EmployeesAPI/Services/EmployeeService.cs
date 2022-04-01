@@ -1,5 +1,5 @@
-﻿
-using EmployeesAPI.Model;
+﻿using EmployeesAPI.Model;
+using System.Linq;
 
 namespace EmployeesAPI.Services;
 
@@ -34,6 +34,11 @@ public class EmployeeService : IRepository<Employee>
     {
 
         return await _context.Employees.FindAsync(id);
+    }
+
+    public List<Employee> GetItemByPredicateAsync(Predicate<Employee> predicate)
+    {
+        return _context.Employees.ToList().FindAll(predicate);
     }
 
     //Make async?

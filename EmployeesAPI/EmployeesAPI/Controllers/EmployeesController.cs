@@ -17,7 +17,6 @@ namespace EmployeesAPI.Controllers
     public class EmployeesController : ControllerBase
     {
         private readonly IRepository<Employee> _service;
-
         public EmployeesController(IRepository<Employee> repository)
         {
             _service = repository;
@@ -28,35 +27,28 @@ namespace EmployeesAPI.Controllers
         public async Task<ActionResult<IEnumerable<Employee>>> GetEmployee()
         { 
             List<Employee> employeeList = new();
-            //Employee employee = new();
-
-          //  var cityQuery = HttpContext.Request.Query["city"];
-          //  var jobTitleQuery = HttpContext.Request.Query["jobtitle"];
-              var idQuery = HttpContext.Request.Query["id"];
+            var cityQuery = HttpContext.Request.Query["city"];
+            var countryQuery = HttpContext.Request.Query["country"];
+            var idQuery = HttpContext.Request.Query["id"];
 
             if (Int32.TryParse(idQuery, out int id))
             {
                 employeeList.Add(_service.GetItemByIdAsync(id).Result);
             }
-            
-            //else if (!String.IsNullOrEmpty(cityQuery))
-            //{
-            //    var city = cityQuery.ToString();
-            //    employeeList = (await _context.Employees.Where(e => e.City == city).Select(e => Utilities.EmployeeToDTO(e)).ToListAsync());
-            //}
-            //else if (!String.IsNullOrEmpty(jobTitleQuery))
-            //{
-            //    var jobTitle = jobTitleQuery.ToString();
-            //    employeeList = await _context.Employees.Where(e => e.Title == jobTitle.Replace('-', ' ')).Select(e => Utilities.EmployeeToDTO(e)).ToListAsync();
-            //}
-            else
+            else if (!String.IsNullOrEmpty(cityQuery))
             {
-              return _service.GetAllItems(); 
-           }
-
-         //   if (employeeList.Count == 0) return NotFound();
-          //  else 
-                return employeeList;
+                Predicate<Employee> predicate = e => e.City.Equals(cityQuery.ToString());
+                employeeList = _service.GetItemByPredicateAsync(predicate);    
+            }
+            else if (!String.IsNullOrEmpty(countryQuery))
+            {
+                Predicate<Employee> predicate = e => e.Country.Equals(countryQuery.ToString());
+                employeeList = _service.GetItemByPredicateAsync(predicate);
+            }
+            else return _service.GetAllItems(); 
+            
+            if (employeeList.Count == 0) return BadRequest();
+            else return employeeList;
         }
 
 
