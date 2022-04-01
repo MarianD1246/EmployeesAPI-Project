@@ -41,7 +41,6 @@ We also had the following requiremed the use of DTOs to return the desired infor
 ## Running tests
 The tests themselves aernt dependant on the Northwind database being installed on your machine so you will be able to run them without it being correctly installed.
 
-## Potential bugs and fixes
 
 # Retrospective
 ## Challenges
