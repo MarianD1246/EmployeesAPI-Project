@@ -26,11 +26,6 @@ namespace EmployeeAPITesting
             _sut = new EmployeesController(_service.Object);
         }
 
-        //tests DTO when contrller update
-        //GET from badrequest to nocontent 
-
-
-
         [Test]
         public void EmployeesControllerSuccessfulConstruction()
         {
