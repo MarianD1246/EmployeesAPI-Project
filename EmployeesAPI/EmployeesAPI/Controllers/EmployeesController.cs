@@ -45,7 +45,7 @@ namespace EmployeesAPI.Controllers
                 Predicate<Employee> predicate = e => e.Country.Equals(countryQuery.ToString());
                 employeeList = _service.GetItemByPredicateAsync(predicate);
             }
-            else return _service.GetAllItems(); 
+            else employeeList = _service.GetAllItems(); 
             
             if (employeeList.Count == 0) return BadRequest();
             else return employeeList;
