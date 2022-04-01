@@ -99,7 +99,7 @@ namespace EmployeeAPITesting
             //Find a function to clear all items from _sut
             foreach(var item in _sut.GetAllItems())
             {
-                _sut.RemoveItemAsync(item);
+                //_sut.RemoveItemAsync(item);
             }
         }
 

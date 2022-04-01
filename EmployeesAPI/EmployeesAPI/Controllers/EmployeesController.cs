@@ -22,20 +22,22 @@ namespace EmployeesAPI.Controllers
             _service = repository;
         }
 
+        [HttpGet("id/{id:int}")]
+        public async Task<ActionResult<SpecificEmployeeDTO>> SpecificEmployee(int id)
+        {
+            return Utilities.SpecificEmployeeToDTO(await _service.GetItemByIdAsync(id));           
+        }
+
         // GET: api/Employees contains all employee searches
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Employee>>> GetEmployee()
+        public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetEmployee()
         { 
-            List<Employee> employeeList = new();
+            List<EmployeeDTO> employeeList = new();
+           
             var cityQuery = HttpContext.Request.Query["city"];
             var countryQuery = HttpContext.Request.Query["country"];
-            var idQuery = HttpContext.Request.Query["id"];
 
-            if (Int32.TryParse(idQuery, out int id))
-            {
-                employeeList.Add(_service.GetItemByIdAsync(id).Result);
-            }
-            else if (!String.IsNullOrEmpty(cityQuery))
+            if (!String.IsNullOrEmpty(cityQuery))
             {
                 Predicate<Employee> predicate = e => e.City.Equals(cityQuery.ToString());
                 employeeList = _service.GetItemByPredicateAsync(predicate);    
@@ -50,7 +52,6 @@ namespace EmployeesAPI.Controllers
             if (employeeList.Count == 0) return BadRequest();
             else return employeeList;
         }
-
 
         // PUT: api/Employees/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -84,26 +85,6 @@ namespace EmployeesAPI.Controllers
             }
 
             return Created("Update Complete", employee);
-
-            //_service.Entry(employee).State = EntityState.Modified;
-
-            //try
-            //{
-            //    await _context.SaveChangesAsync();
-            //}
-            //catch (DbUpdateConcurrencyException)
-            //{
-            //    if (!EmployeeExists(id))
-            //    {
-            //        return NotFound();
-            //    }
-            //    else
-            //    {
-            //        throw;
-            //    }
-            //}
-
-            //return NoContent();
         }
 
         // POST: api/Employees
@@ -131,13 +112,5 @@ namespace EmployeesAPI.Controllers
 
             return NoContent();
         }
-
-        //private bool EmployeeExists(int id)
-        //{
-        //    return _context.Employees.Any(e => e.EmployeeId == id);
-        //}
-
-
     }
-
 }
