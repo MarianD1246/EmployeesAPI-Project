@@ -53,8 +53,6 @@ The tests themselves aernt dependant on the Northwind database being installed o
 ## What we have learned
 * We now know how to create a web API.
 * Mocking API and Database elements tests for API's
-* SQL
-* API's
 * More experience working under time constraints.
 ## Mood Diagram
 
