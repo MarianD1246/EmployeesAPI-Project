@@ -1,11 +1,11 @@
 # EmployeesAPI-Project
 
 ## Contributors
-Marian Dumitriu - GitGuru and Lead Tester
-Guarav Dogra - Lead Dev and Tester
-James Dickson - Lead Dev 
-Steven Maddox - Dev 
-Stanni Lewis - Product Owner/Scrum Master
+- Marian Dumitriu - GitGuru and Lead Tester
+- Guarav Dogra - Lead Dev and Tester
+- James Dickson - Lead Dev 
+- Steven Maddox - Dev 
+- Stanni Lewis - Product Owner/Scrum Master
 ## Description
 This project is to build a REST API application for the Northwind database, with the API exposing useful information and functionality around Employees. The project has made use of Scrum (a single backlog/sprint) for project management. 
 
