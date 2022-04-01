@@ -40,16 +40,19 @@ namespace EmployeeAPITesting
         [Test]
         public void GetEmpoyee_HappyPath_ReturnAListOfEmpoyee()
         {
-            _service.Setup(x => x.GetAllItems()).Returns(TestEmpolyeesDataSource.EmployeesList);
+            EmployeeDTO employee = new() { EmployeeId = 1, Name = "Dodsworth Annie", JobTitle = "Sales Representative" };
+            List<EmployeeDTO> dtoList = new() { employee };
+            _service.Setup(x => x.GetAllItems()).Returns(dtoList);
             var result = _sut.GetEmployee();
             Assert.That(result.IsCompleted);
-            Assert.That(result, Is.InstanceOf<Task<ActionResult<IEnumerable<Employee>>>>());
+            Assert.That(result, Is.InstanceOf<Task<ActionResult<IEnumerable<EmployeeDTO>>>>());
         }
 
         [Test]
         public void GetEmpoyee_SadPath_ReturnBadRequest()
         {
-            _service.Setup(x => x.GetAllItems()).Returns(new List<Employee>());
+            EmployeeDTO employee = new() { EmployeeId = 1, Name = "Dodsworth Annie", JobTitle = "Sales Representative" };
+            _service.Setup(x => x.GetAllItems()).Returns(new List<EmployeeDTO>());
             var result = _sut.GetEmployee();
             Assert.That(result.IsCompleted);
             _service.Verify(cs => cs.GetAllItems(), Times.Never);
