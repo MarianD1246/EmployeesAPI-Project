@@ -1,5 +1,7 @@
 # EmployeesAPI-Project
 
+## Contributors
+Marian Dumitriu, Guarav Dogra, James Dickson, Steven Maddox, Stanni Lewis
 ## Description
 This project is to build a REST API application for the Northwind database, with the API exposing useful information and functionality around Employees. The project has made use of Scrum (a single backlog/sprint) for project management. 
 
@@ -29,17 +31,31 @@ We also had the following requiremed the use of DTOs to return the desired infor
 ## Technologies used
 * C#
 * Visual Studio
+* Git/Github
+* Entity Framework
+* SQL
+* Swagger
+* Moq InMemoryDatabse. 
 
-## Challenges
-
-## What we have learned
 
 ## Running tests
 The tests themselves aernt dependant on the Northwind database being installed on your machine so you will be able to run them without it being correctly installed.
 
 ## Potential bugs and fixes
 
-## Contributors
+# Retrospective
+## Challenges
+* Communication between sub teams was sometimes strained, and led to mixups. 
+* Hyperfocus on certain elements of the project over a more holistic approach leading to a relatively thin API
+* Relatively new to mocking and dependency inversions so tests may not be as rigourous and thorough as they should be.
+* Difficulties rewriting controller due to dependency inversions. 
+* Balancing the workload vs the time constraint.
+
+## What we have learned
+
+
+
+## Mood Diagram
 
 
 
