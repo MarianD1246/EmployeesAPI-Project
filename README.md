@@ -12,7 +12,7 @@ This project is to build a REST API application for the Northwind database, with
 3. Startup the solution in Visual Studio 2022.
 4. Run the solution in debug mode.
 5. A webpage will load to the default route listing all employees.
-6. Alternatively you can look up the API documentation at https://localhost:<port> /(replace <port> with your port number).
+6. Alternatively you can look up the API documentation at the default URL.  
 
 We also had the following requiremed the use of DTOs to return the desired information for each call. Along with the following optional requirements:
 * SwaggerUI documentation 
