@@ -78,9 +78,9 @@ namespace EmployeeAPITesting
         public void PostEmployee_AddsAnEmployee_GivenValidInfo()
         {
             Employee employee = new Employee() { LastName = "Dodsworth", FirstName = "Annie", Title = "Sales Representative", Region = "WA" };
-            var result = _sut.PostEmployee(Utilities.EmployeeToDTO(employee));
+            var result = _sut.PostEmployee(employee);
             Assert.That(result.IsCompleted);
-            Assert.That(result.Result, Is.InstanceOf<ActionResult<EmployeeDTO>>());
+            Assert.That(result.Result, Is.InstanceOf<ActionResult<Employee>>());
             Assert.That(result.Result.Result, Is.InstanceOf<CreatedAtActionResult>());
         }
 

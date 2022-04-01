@@ -25,7 +25,10 @@ namespace EmployeesAPI.Controllers
         [HttpGet("id/{id:int}")]
         public async Task<ActionResult<SpecificEmployeeDTO>> SpecificEmployee(int id)
         {
-            return Utilities.SpecificEmployeeToDTO(await _service.GetItemByIdAsync(id));           
+            if (_service.ItemExists(id))
+                return Utilities.SpecificEmployeeToDTO(await _service.GetItemByIdAsync(id));
+            else
+                return BadRequest();
         }
 
         // GET: api/Employees contains all employee searches
@@ -90,10 +93,10 @@ namespace EmployeesAPI.Controllers
         // POST: api/Employees
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<EmployeeDTO>> PostEmployee(EmployeeDTO employee)
+        public async Task<ActionResult<Employee>> PostEmployee(Employee employee)
         {
-            await _service.CreateItemAsync(Utilities.DTOToEmployee(employee));
-            return CreatedAtAction( nameof(GetEmployee), new { id = employee.EmployeeId }, Utilities.DTOToEmployee(employee));
+            await _service.CreateItemAsync(employee);
+            return CreatedAtAction( nameof(GetEmployee), new { id = employee.EmployeeId }, employee);
             //ID doens't increment in the post method
         }
 
