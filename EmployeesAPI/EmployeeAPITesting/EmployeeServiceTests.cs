@@ -22,6 +22,8 @@ namespace EmployeeAPITesting
                 .UseInMemoryDatabase(databaseName: "MemoryDB").Options;
             _context = new NorthwindContext(options);
             _sut = new EmployeeService(_context);
+            _sut = new EmployeeService(_context);
+
 
         }
 
@@ -54,7 +56,7 @@ namespace EmployeeAPITesting
         public void GetAllItems_ShouldGetAllItems()
         {
             var result = _sut.GetAllItems();
-            Assert.That(result.Count, Is.EqualTo(4));
+            Assert.That(result.Count, Is.EqualTo(5));
             Assert.That(result, Is.Not.Null);
             Assert.That(result, Is.TypeOf<List<EmployeeDTO>>());
 
@@ -64,9 +66,10 @@ namespace EmployeeAPITesting
         public void CreateItemAsync_ShouldAddAnEmployeeItem()
         {
             int originalNumOfEmpoyee = _sut.GetAllItems().Count;
-            Employee employee = new Employee() { EmployeeId = originalNumOfEmpoyee + 1, FirstName = "Gaurav", LastName = "Dogra", Title = "CEO", Region = "WA" };
+            System.Console.WriteLine(originalNumOfEmpoyee);
+            Employee employee = new Employee() { EmployeeId = 15, FirstName = "Gaurav", LastName = "Dogra", Title = "CEO", Region = "WA" };
            
-            _sut.CreateItemAsync(employee).Wait();
+            _sut.CreateItemAsync(employee);
             int countAfterAdd = _sut.GetAllItems().Count;
             Assert.That(countAfterAdd, Is.EqualTo(originalNumOfEmpoyee + 1));
         }
@@ -89,8 +92,10 @@ namespace EmployeeAPITesting
         public void RemoveItemAsyncByItem_ShouldRemoveTheItem()
         {
             int originalNumOfEmpoyee = _sut.GetAllItems().Count;
-            _sut.RemoveItemAsync(TestEmpolyeesDataSource.EmployeesList[originalNumOfEmpoyee-1]).Wait();
+            //System.Console.WriteLine(originalNumOfEmpoyee);
+            _sut.RemoveItemAsync(TestEmpolyeesDataSource.EmployeesList[0]).Wait();
             int countAfterRemove = _sut.GetAllItems().Count;
+            System.Console.WriteLine(countAfterRemove);
             Assert.That(countAfterRemove, Is.EqualTo(originalNumOfEmpoyee - 1));
         }
 
@@ -98,10 +103,11 @@ namespace EmployeeAPITesting
         public void TearDown()
         {
             //Find a function to clear all items from _sut
-            foreach(var item in _sut.GetAllItems())
+            foreach (var employee in TestEmpolyeesDataSource.EmployeesList)
             {
-                //_sut.RemoveItemAsync(item);
+                _sut.RemoveItemAsync(employee);
             }
+
         }
 
     }
